@@ -1,7 +1,8 @@
-package com.project.homepage.domain;
+package com.project.homepage.domain.post;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.project.homepage.domain.post.Post;
+import com.project.homepage.domain.BaseTimeEntity;
+import com.project.homepage.domain.Comment;
 import com.project.homepage.domain.user.User;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -9,21 +10,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Comment extends BaseTimeEntity {
+public class Post extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "comment_id")
+    @Column(name = "post_id")
     private Long id;
-
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id", nullable = false)
-    private Post post;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
@@ -31,12 +29,18 @@ public class Comment extends BaseTimeEntity {
     private User user;
 
     @Column(nullable = false)
+    private String title;
+
+    @Column(nullable = false)
     private String content;
 
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private List<Comment> commentList = new ArrayList<>();
+
     @Builder
-    public Comment(Post post, User user, String content) {
-        this.post = post;
+    public Post(User user, String title, String content) {
         this.user = user;
+        this.title = title;
         this.content = content;
     }
 }
