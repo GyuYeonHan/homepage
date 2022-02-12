@@ -23,8 +23,8 @@ public class PostService {
     }
 
     @Transactional
-    public void delete(Long id) {
-        Post posts = postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
+    public void delete(Post post) {
+        Post posts = postRepository.findById(post.getId()).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + post.getId()));
         List<Comment> commentList = posts.getCommentList();
 
         for (Comment comment : commentList) {
