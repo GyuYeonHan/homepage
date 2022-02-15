@@ -45,7 +45,6 @@ class PostServiceTest {
     public void init() {
         userInit();
         postInit();
-
         commentInit();
     }
 

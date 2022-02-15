@@ -3,10 +3,7 @@ package com.project.homepage.domain.user;
 import com.project.homepage.domain.BaseTimeEntity;
 import com.project.homepage.domain.Comment;
 import com.project.homepage.domain.post.Post;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -48,4 +45,5 @@ public class User extends BaseTimeEntity {
         this.loginId = loginId;
         this.password = password;
     }
+
 }

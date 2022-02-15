@@ -4,6 +4,7 @@ import com.project.homepage.domain.Comment;
 import com.project.homepage.domain.post.Post;
 import com.project.homepage.repository.CommentRepository;
 import com.project.homepage.repository.PostRepository;
+import com.project.homepage.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,12 +16,21 @@ import java.util.List;
 public class PostService {
 
     private final PostRepository postRepository;
+    private final UserRepository userRepository;
     private final CommentRepository commentRepository;
 
     @Transactional
     public Post save(Post post) {
         return postRepository.save(post);
     }
+
+    @Transactional
+    public Post saveWithUsername(Post post, String username) {
+
+
+        return postRepository.save(post);
+    }
+
 
     @Transactional
     public void delete(Post post) {
@@ -37,6 +47,12 @@ public class PostService {
     @Transactional(readOnly = true)
     public List<Post> findAllDesc() {
         return postRepository.findAllDesc();
+    }
+
+    @Transactional(readOnly = true)
+    public Post findById(Long id) {
+        Post post = postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
+        return post;
     }
 
 
