@@ -1,4 +1,4 @@
-package com.project.homepage.web.controller;
+package com.project.homepage.web;
 
 import com.project.homepage.domain.post.Post;
 import com.project.homepage.service.PostService;

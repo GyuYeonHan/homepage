@@ -6,6 +6,14 @@
 </head>
 <body>
     <div>홈 화면</div>
-    <a href="board">게시판</a>
+    <div th:if="${user != null}">
+        <span class="mb-3" th:text="|반갑습니다 : ${user.username} 님|">로그인 사용자 이름</span>
+        <form th:action="@{/logout}" method="post">
+            <button type="submit"> 로그아웃</button>
+        </form>
+    </div>
+    <hr>
+    <a href="/board">게시판</a>
+    <a href="/login" th:if="${user == null}">로그인</a>
 </body>
 </html>
