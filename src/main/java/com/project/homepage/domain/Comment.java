@@ -39,4 +39,8 @@ public class Comment extends BaseTimeEntity {
         this.user = user;
         this.content = content;
     }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

@@ -1,22 +1,19 @@
 package com.project.homepage.web.dto;
 
-import com.project.homepage.domain.post.Post;
+import com.project.homepage.domain.Comment;
+import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 
 @Data
-public class PostSaveRequestDto {
-
-    @NotBlank
-    private String title;
+public class CommentSaveRequestDto {
 
     @NotBlank
     private String content;
 
-    public Post toEntity() {
-        return Post.builder()
-                .title(title)
+    public Comment toEntity() {
+        return Comment.builder()
                 .content(content)
                 .build();
     }

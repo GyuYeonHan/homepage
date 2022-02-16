@@ -5,10 +5,6 @@ import com.project.homepage.web.dto.PostResponseDto;
 import com.project.homepage.web.dto.PostSaveRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,7 +30,7 @@ public class PostApiController {
     }
 
     @PostMapping
-    public Long savePost(PostSaveRequestDto dto) throws IOException {
+    public Long savePost(PostSaveRequestDto dto) {
         return postService.save(dto.toEntity()).getId();
     }
 }
