@@ -21,4 +21,9 @@ public class CommentService {
     public void delete(Comment comment) {
         commentRepository.delete(comment);
     }
+
+    @Transactional(readOnly = true)
+    public Comment findById(Long id) {
+        return commentRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 댓글이 없습니다. id=" + id));
+    }
 }

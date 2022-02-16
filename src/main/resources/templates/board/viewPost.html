@@ -36,7 +36,7 @@
                 <small th:text="*{user.username}"></small>
                 <div class="vr"></div>
                 <span th:text="*{content}"></span>
-                <button type="button" class="btn-close float-end" aria-label="Close" th:id="|CommentDeleteBtn-${comment.id}|"></button>
+                <button type="button" class="btn-close float-end" aria-label="Close" th:id="|CommentDeleteBtn-${comment.id}|">삭제</button>
             </div>
             <hr>
         </div>
@@ -46,21 +46,21 @@
         </div>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script th:inline="javascript">
     $("#button-comment").click(function() {
         const postId = [[${post.id}]];
         const jsonData = JSON.stringify({
             content: $("#commentContent").val(),
-            writer: [[${commentForm.writer}]]
         });
         $.ajax({
             type : "POST",
-            url : "/posts/" + postId + "/comment",
+            url : "/board/" + postId + "/comment",
             dataType : "json",
             contentType : "application/json; charset=utf-8",
             data : jsonData,
             success : function() {
-                window.location.href = '/posts/' + postId;
+                window.location.href = '/board/' + postId;
             },
             error : function() {
                 alert("댓글 등록에 실패하였습니다.");
@@ -73,9 +73,9 @@
         const commentId = $(this).attr('id').split("-")[1];
         $.ajax({
             type : "DELETE",
-            url : "/posts/comment/" + commentId,
+            url : "/board/comment/" + commentId,
             success : function() {
-                window.location.href = '/posts/' + postId;
+                window.location.href = '/board/' + postId;
             },
             error : function() {
                 alert("댓글 삭제에 실패하였습니다.");
@@ -87,9 +87,9 @@
         const postId = [[${post.id}]];
         $.ajax({
             type : "DELETE",
-            url : "/posts/" + postId,
+            url : "/board/" + postId,
             success : function() {
-                window.location.href = '/posts';
+                window.location.href = '/board';
             },
             error : function() {
                 alert("글 삭제에 실패하였습니다.");

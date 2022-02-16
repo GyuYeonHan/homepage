@@ -16,21 +16,12 @@ import java.util.List;
 public class PostService {
 
     private final PostRepository postRepository;
-    private final UserRepository userRepository;
     private final CommentRepository commentRepository;
 
     @Transactional
     public Post save(Post post) {
         return postRepository.save(post);
     }
-
-    @Transactional
-    public Post saveWithUsername(Post post, String username) {
-
-
-        return postRepository.save(post);
-    }
-
 
     @Transactional
     public void delete(Post post) {
@@ -51,9 +42,6 @@ public class PostService {
 
     @Transactional(readOnly = true)
     public Post findById(Long id) {
-        Post post = postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
-        return post;
+        return postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
     }
-
-
 }

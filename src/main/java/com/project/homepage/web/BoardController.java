@@ -36,7 +36,7 @@ public class BoardController {
     }
 
     @GetMapping("/save")
-    public String savePostForm(@Login User user, Model model) {
+    public String savePostForm(Model model) {
         PostSaveRequestDto dto = new PostSaveRequestDto();
 
         model.addAttribute("post", dto);
@@ -58,7 +58,7 @@ public class BoardController {
     }
 
     @GetMapping("/{id}")
-    public String viewPost(@PathVariable Long id, Model model, @Login User user) {
+    public String viewPost(@PathVariable Long id, Model model) {
         Post post = postService.findById(id);
         PostResponseDto postDto = new PostResponseDto(post);
         List<Comment> commentsList = post.getCommentList();
