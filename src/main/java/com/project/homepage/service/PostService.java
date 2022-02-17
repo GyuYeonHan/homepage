@@ -4,7 +4,6 @@ import com.project.homepage.domain.Comment;
 import com.project.homepage.domain.post.Post;
 import com.project.homepage.repository.CommentRepository;
 import com.project.homepage.repository.PostRepository;
-import com.project.homepage.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +20,12 @@ public class PostService {
     @Transactional
     public Post save(Post post) {
         return postRepository.save(post);
+    }
+
+    @Transactional
+    public void update(Long id, String title, String content) {
+        Post post = postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id="+ id));
+        post.update(title, content);
     }
 
     @Transactional

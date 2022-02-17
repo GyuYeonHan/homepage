@@ -1,9 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<head th:replace="layout/fragment :: head">
 <body>
     <div>홈 화면</div>
     <div th:if="${user != null}">
@@ -15,5 +12,6 @@
     <hr>
     <a href="/board">게시판</a>
     <a href="/login" th:if="${user == null}">로그인</a>
+    <th:block th:replace="layout/fragment :: script" />
 </body>
 </html>

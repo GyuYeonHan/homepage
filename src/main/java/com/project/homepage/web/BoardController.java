@@ -5,6 +5,7 @@ import com.project.homepage.domain.post.Post;
 import com.project.homepage.domain.user.User;
 import com.project.homepage.service.PostService;
 import com.project.homepage.web.dto.CommentSaveRequestDto;
+import com.project.homepage.web.dto.PostEditRequestDto;
 import com.project.homepage.web.dto.PostResponseDto;
 import com.project.homepage.web.dto.PostSaveRequestDto;
 import com.project.homepage.web.login.Login;
@@ -74,6 +75,27 @@ public class BoardController {
         return "board/viewPost";
     }
 
+    @GetMapping("/{id}/edit")
+    public String editPostForm(@PathVariable Long id, Model model) {
+        Post post = postService.findById(id);
+        PostEditRequestDto postDto = new PostEditRequestDto(post.getTitle(), post.getContent());
+        model.addAttribute("post", postDto);
+        model.addAttribute("postId", id);
+
+        return "board/editPostForm";
+    }
+
+    @PostMapping("/{id}/edit")
+    public String editPost(@PathVariable Long id, @Validated @ModelAttribute("post") PostEditRequestDto dto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "board/editPostForm";
+        }
+        postService.update(id, dto.getTitle(), dto.getContent());
+
+        return "redirect:/board/{id}";
+    }
+
+    @ResponseBody
     @DeleteMapping("/{id}")
     public String deletePost(@PathVariable Long id) {
         postService.delete(postService.findById(id));

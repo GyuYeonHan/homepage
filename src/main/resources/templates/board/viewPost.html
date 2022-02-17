@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-</head>
+<head th:replace="layout/fragment :: head">
 <body>
 <div class="m-5">
     <div>
@@ -13,9 +13,9 @@
                             th:onclick="|location.href='@{/board}'|">목록
                     </button>
                     <button type="button" class="btn btn-primary btn-sm"
-                            th:onclick="|location.href='@{/board/edit/{id}(id=${post.id})}'|">수정
+                            th:onclick="|location.href='@{/board/{id}/edit(id=${post.id})}'|">수정
                     </button>
-                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                    <button type="button" class="btn btn-danger btn-sm" id="postDeleteBtn">
                         삭제
                     </button>
                 </div>
@@ -36,7 +36,7 @@
                 <small th:text="*{user.username}"></small>
                 <div class="vr"></div>
                 <span th:text="*{content}"></span>
-                <button type="button" class="btn-close float-end" aria-label="Close" th:id="|CommentDeleteBtn-${comment.id}|">삭제</button>
+                <button type="button" class="btn-close float-end" aria-label="Close" th:id="|CommentDeleteBtn-${comment.id}|"></button>
             </div>
             <hr>
         </div>
@@ -46,7 +46,7 @@
         </div>
     </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<th:block th:replace="layout/fragment :: script" />
 <script th:inline="javascript">
     $("#button-comment").click(function() {
         const postId = [[${post.id}]];
@@ -83,7 +83,7 @@
         });
     });
 
-    $("#PostDeleteBtn").click(function() {
+    $("#postDeleteBtn").click(function() {
         const postId = [[${post.id}]];
         $.ajax({
             type : "DELETE",

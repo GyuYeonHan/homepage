@@ -1,9 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<head th:replace="layout/fragment :: head">
 <body>
     <div>게시판</div>
     <a href="/">홈</a>
@@ -26,5 +23,6 @@
         </tr>
         </tbody>
     </table>
+    <th:block th:replace="layout/fragment :: script" />
 </body>
 </html>

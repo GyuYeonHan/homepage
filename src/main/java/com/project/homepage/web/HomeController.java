@@ -15,7 +15,6 @@ public class HomeController {
     public String homeLogin(@Login User loginUser, Model model) {
         //세션에 회원 데이터가 있으면 모델에 유저 추가
         if (loginUser != null) {
-            log.info("username: {}", loginUser.getUsername());
             model.addAttribute("user", loginUser);
         }
 
