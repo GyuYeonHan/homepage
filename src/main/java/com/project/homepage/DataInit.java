@@ -36,13 +36,21 @@ public class DataInit {
     }
 
     private void userInit() {
-        user = User.builder()
+        User admin = User.builder()
                 .username("유저A")
                 .role(Role.ADMIN)
+                .loginId("admin")
+                .password("admin")
+                .build();
+
+        user = User.builder()
+                .username("유저B")
+                .role(Role.STUDENT)
                 .loginId("test")
                 .password("test")
                 .build();
 
+        userRepository.save(admin);
         userRepository.save(user);
     }
 

@@ -1,4 +1,4 @@
-package com.project.homepage.web.dto;
+package com.project.homepage.web.dto.post;
 
 import com.project.homepage.domain.post.Post;
 import lombok.Data;

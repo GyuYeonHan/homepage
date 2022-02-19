@@ -5,7 +5,7 @@ import com.project.homepage.domain.post.Post;
 import com.project.homepage.domain.user.User;
 import com.project.homepage.service.CommentService;
 import com.project.homepage.service.PostService;
-import com.project.homepage.web.dto.CommentSaveRequestDto;
+import com.project.homepage.web.dto.comment.CommentSaveRequestDto;
 import com.project.homepage.web.login.Login;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

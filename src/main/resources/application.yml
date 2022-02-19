@@ -31,3 +31,5 @@ spring:
 logging.level:
   org.hibernate.SQL: debug
 
+origin: "http://localhost:3000"
+

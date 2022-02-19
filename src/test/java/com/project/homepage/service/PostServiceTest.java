@@ -95,10 +95,31 @@ class PostServiceTest {
     @Test
     @DisplayName("저장된 게시글을 조회하기")
     void save() {
+        //given
         List<Post> postList = postRepository.findAll();
         Post saved_post1 = postList.get(0);
+
+        //then
         assertThat(saved_post1.getTitle()).isEqualTo(post1_title);
         assertThat(saved_post1.getContent()).isEqualTo(post1_content);
+    }
+
+    @Test
+    @DisplayName("게시글 수정하기")
+    void update() {
+        //when
+        List<Post> postList = postRepository.findAll();
+        Post saved_post1 = postList.get(0);
+        String post1_title_edited = "수정된 게시글 1";
+        String post1_content_edited = "수정된 게시글 1 본문";
+
+        //given
+        postService.update(saved_post1.getId(), post1_title_edited, post1_content_edited);
+        Post edited_Post1 = postService.findById(saved_post1.getId());
+
+        //then
+        assertThat(edited_Post1.getTitle()).isEqualTo(post1_title_edited);
+        assertThat(edited_Post1.getContent()).isEqualTo(post1_content_edited);
     }
 
     @Test

@@ -41,7 +41,7 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public List<Post> findAllDesc() {
+    public List<Post> findAllPost() {
         return postRepository.findAllDesc();
     }
 

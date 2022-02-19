@@ -1,15 +1,15 @@
 package com.project.homepage.web.api;
 
 import com.project.homepage.service.PostService;
-import com.project.homepage.web.dto.PostResponseDto;
-import com.project.homepage.web.dto.PostSaveRequestDto;
+import com.project.homepage.web.dto.post.PostResponseDto;
+import com.project.homepage.web.dto.post.PostSaveRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/post/api")
+@RequestMapping("/api/post")
 @RequiredArgsConstructor
 public class PostApiController {
 
@@ -17,7 +17,7 @@ public class PostApiController {
 
     @GetMapping
     public List<PostResponseDto> getAllPostList() {
-        List<PostResponseDto> postDtoList = postService.findAllDesc().stream()
+        List<PostResponseDto> postDtoList = postService.findAllPost().stream()
                 .map(PostResponseDto::new)
                 .collect(Collectors.toList());
 

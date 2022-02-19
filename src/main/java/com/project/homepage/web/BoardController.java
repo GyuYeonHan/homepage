@@ -4,10 +4,10 @@ import com.project.homepage.domain.Comment;
 import com.project.homepage.domain.post.Post;
 import com.project.homepage.domain.user.User;
 import com.project.homepage.service.PostService;
-import com.project.homepage.web.dto.CommentSaveRequestDto;
-import com.project.homepage.web.dto.PostEditRequestDto;
-import com.project.homepage.web.dto.PostResponseDto;
-import com.project.homepage.web.dto.PostSaveRequestDto;
+import com.project.homepage.web.dto.comment.CommentSaveRequestDto;
+import com.project.homepage.web.dto.post.PostEditRequestDto;
+import com.project.homepage.web.dto.post.PostResponseDto;
+import com.project.homepage.web.dto.post.PostSaveRequestDto;
 import com.project.homepage.web.login.Login;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
@@ -30,8 +31,10 @@ public class BoardController {
 
     @GetMapping
     public String boardHome(Model model) {
-        List<Post> postList = postService.findAllDesc();
-        model.addAttribute("postList", postList);
+        List<PostResponseDto> postDtoList = postService.findAllPost().stream()
+                .map(PostResponseDto::new)
+                .collect(Collectors.toList());
+        model.addAttribute("postList", postDtoList);
 
         return "board/board";
     }
@@ -47,7 +50,6 @@ public class BoardController {
     @PostMapping("/save")
     public String savePost(@Validated @ModelAttribute("post") PostSaveRequestDto dto, BindingResult bindingResult, @Login User user) {
         if (bindingResult.hasErrors()) {
-            log.info("error");
             return "board/savePostForm";
         }
 

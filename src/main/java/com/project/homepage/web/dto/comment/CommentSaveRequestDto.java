@@ -1,4 +1,4 @@
-package com.project.homepage.web.dto;
+package com.project.homepage.web.dto.comment;
 
 import com.project.homepage.domain.Comment;
 import lombok.Builder;

@@ -18,8 +18,8 @@
         <tr th:object="${post}">
             <td th:text="*{id}">ID</td>
             <td><a th:href="@{/board/{id}(id=*{id})}" th:text="*{title}">제목</a></td>
-            <td th:text="*{user.username}">작성자</td>
-            <td th:text="${#temporals.format(post.modifiedDate, 'yyyy년 MM월 dd일 HH시 mm분 ss초')}">최종수정일</td>
+            <td th:text="*{username}">작성자</td>
+            <td th:text="*{modifiedDate}">최종수정일</td>
         </tr>
         </tbody>
     </table>
