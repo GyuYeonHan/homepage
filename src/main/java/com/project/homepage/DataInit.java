@@ -37,14 +37,14 @@ public class DataInit {
 
     private void userInit() {
         User admin = User.builder()
-                .username("유저A")
+                .username("관리자A")
                 .role(Role.ADMIN)
                 .loginId("admin")
                 .password("admin")
                 .build();
 
         user = User.builder()
-                .username("유저B")
+                .username("김학생")
                 .role(Role.STUDENT)
                 .loginId("test")
                 .password("test")

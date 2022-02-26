@@ -23,7 +23,7 @@ public class PostService {
     }
 
     @Transactional
-    public void update(Long id, String title, String content) {
+    public void edit(Long id, String title, String content) {
         Post post = postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id="+ id));
         post.update(title, content);
     }

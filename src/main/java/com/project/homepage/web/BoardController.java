@@ -92,7 +92,7 @@ public class BoardController {
         if (bindingResult.hasErrors()) {
             return "board/editPostForm";
         }
-        postService.update(id, dto.getTitle(), dto.getContent());
+        postService.edit(id, dto.getTitle(), dto.getContent());
 
         return "redirect:/board/{id}";
     }

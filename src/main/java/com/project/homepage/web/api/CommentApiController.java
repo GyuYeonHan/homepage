@@ -19,9 +19,9 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/post")
+@RequestMapping("/api/comment")
 @RequiredArgsConstructor
-public class PostApiController {
+public class CommentApiController {
 
     private final PostService postService;
 
@@ -60,8 +60,8 @@ public class PostApiController {
 
     @PutMapping("/{postId}")
     public ResponseEntity<String> editPost(@PathVariable Long postId, @RequestBody PostEditRequestDto dto, @Login User user) {
-        if (UserNotAuthentication(postId, user))
-            return new ResponseEntity<>("You are not authorized", HttpStatus.UNAUTHORIZED);
+        if (!UserAuthentication(postId, user))
+            return new ResponseEntity<>("you are not authorized", HttpStatus.UNAUTHORIZED);
         postService.edit(postId, dto.getTitle(), dto.getContent());
 
         return new ResponseEntity<>("Edit Post Success", HttpStatus.OK);
@@ -69,23 +69,23 @@ public class PostApiController {
 
     @DeleteMapping("/{postId}")
     public ResponseEntity<String> deletePost(@PathVariable Long postId, @Login User user) {
-        if (UserNotAuthentication(postId, user))
-            return new ResponseEntity<>("You are not authorized", HttpStatus.UNAUTHORIZED);
+        if (!UserAuthentication(postId, user))
+            return new ResponseEntity<>("you are not authorized", HttpStatus.UNAUTHORIZED);
         postService.delete(postService.findById(postId));
 
-        return new ResponseEntity<>("Delete Post Success", HttpStatus.OK);
+        return new ResponseEntity<>("delete success", HttpStatus.OK);
     }
 
-    private boolean UserNotAuthentication(@PathVariable Long postId, @Login User user) {
+    private boolean UserAuthentication(@PathVariable Long postId, @Login User user) {
         Post post = postService.findById(postId);
         if (user == null) {
-            return true;
+            return false;
         }
 
         if (!post.getUser().getId().equals(user.getId())) {
-            return true;
+            return false;
         }
 
-        return false;
+        return true;
     }
 }
