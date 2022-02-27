@@ -2,20 +2,17 @@ package com.project.homepage.web.api;
 
 import com.project.homepage.domain.user.User;
 import com.project.homepage.service.LoginService;
+import com.project.homepage.web.dto.user.SessionDto;
 import com.project.homepage.web.login.LoginForm;
 import com.project.homepage.web.login.LoginResponseDto;
 import com.project.homepage.web.login.SessionConst;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @Slf4j
@@ -53,14 +50,17 @@ public class AuthApiController {
         if (session != null) {
             session.invalidate();
         }
-        return "redirect:/";
+        return "Logout Success";
     }
 
     @GetMapping("/session")
-    public String checkLogin(HttpServletRequest req) {
+    public SessionDto getSession(HttpServletRequest req) {
         HttpSession session = req.getSession(false);
-        User attribute = (User) session.getAttribute(SessionConst.LOGIN_USER);
+        if (session == null) {
+            return new SessionDto(false, null);
+        }
+        User user = (User) session.getAttribute(SessionConst.LOGIN_USER);
 
-        return attribute.getUsername();
+        return new SessionDto(true, user.getUsername());
     }
 }

@@ -21,6 +21,9 @@ public class PostEditRequestDto {
                 .build();
     }
 
+    public PostEditRequestDto() {
+    }
+
     public PostEditRequestDto(String title, String content) {
         this.title = title;
         this.content = content;
