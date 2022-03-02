@@ -1,7 +1,6 @@
 package com.project.homepage.web.dto.comment;
 
 import com.project.homepage.domain.Comment;
-import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;

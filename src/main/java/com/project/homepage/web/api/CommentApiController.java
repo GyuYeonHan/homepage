@@ -44,14 +44,14 @@ public class CommentApiController {
             return new ResponseEntity<>("You are not authorized", HttpStatus.UNAUTHORIZED);
         commentService.delete(commentService.findById(commentId));
 
-        return new ResponseEntity<>("Delete Post Success", HttpStatus.OK);
+        return new ResponseEntity<>("Delete Comment Success", HttpStatus.OK);
     }
 
     private boolean UserNotAuthentication(User user) {
         return user == null;
     }
 
-    private boolean UserNotAuthorization(@PathVariable Long commentId, @Login User user) {
+    private boolean UserNotAuthorization(Long commentId, User user) {
         Comment comment = commentService.findById(commentId);
         if (user.getRole().equals(Role.ADMIN)) {
             return false;

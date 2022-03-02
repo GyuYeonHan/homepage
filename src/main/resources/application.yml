@@ -3,16 +3,16 @@ spring:
     active: local
 
   datasource:
-    url: jdbc:h2:mem:homepage;MODE=MySQL;
-    #    url: jdbc:h2:tcp://localhost/~/homepage
+#    url: jdbc:h2:mem:homepage;MODE=MySQL;
+    url: jdbc:h2:tcp://localhost/~/homepage;MODE=MYSQL
     driverClassName: org.h2.Driver
     username: sa
     password:
 
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
+#  h2:
+#    console:
+#      enabled: true
+#      path: /h2-console
 
   jpa:
     properties:
@@ -23,7 +23,7 @@ spring:
         dialect.storage_engine: innodb
 
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
 
   session:
     store-type: jdbc
@@ -31,7 +31,6 @@ spring:
 logging.level:
   org.hibernate.SQL: debug
 
-#origin: "http://projects.yongcademy.kro.kr:3000"
 origin: "http://localhost:3000"
 
 server:
