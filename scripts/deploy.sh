@@ -4,7 +4,7 @@ REPOSITORY=/home/ec2-user/project
 PROJECT_NAME=homepage
 
 echo "> Build 파일 복사"
-cp $REPOSITORY/zip/*.jar $REPOSITORY/.file
+cp $REPOSITORY/zip/*.jar $REPOSITORY/
 
 echo "> 현재 구동 중인 애플리케이션 pid 확인"
 CURRENT_PID=$(pgrep -fl homepage | grep jar | aws '{print $1}')
