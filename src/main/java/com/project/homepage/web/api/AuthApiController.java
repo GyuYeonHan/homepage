@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @Slf4j
@@ -26,7 +27,7 @@ public class AuthApiController {
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDto> login(@RequestBody LoginForm form,
                                                   @RequestParam(defaultValue = "/") String redirectURL,
-                                                  HttpServletRequest request) {
+                                                  HttpServletRequest request, HttpServletResponse response) {
         User loginUser = loginService.login(form.getLoginId(), form.getPassword());
 
         if (loginUser == null) {
@@ -41,6 +42,7 @@ public class AuthApiController {
 
         LoginResponseDto data = new LoginResponseDto(loginUser, session.getId(), redirectURL);
 
+//        response.setHeader("Set-Cookie", "key=value; HttpOnly; SameSite=none");
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 
