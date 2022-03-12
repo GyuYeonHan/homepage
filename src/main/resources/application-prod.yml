@@ -3,7 +3,7 @@ spring:
     active: prod
 
 #origin: "https://modest-colden-ebfcd4.netlify.app/"
-origin: "http://localhost:3000"
+#origin: "http://localhost:3000"
 
 server:
   ssl:
