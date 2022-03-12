@@ -15,8 +15,9 @@ server:
     session:
       cookie:
         name: JSESSIONID
-        domain: projects.yongcademy.kro.kr
+#        domain: projects.yongcademy.kro.kr
         http-only: true
         path: /
+        same-site: none
 
 
