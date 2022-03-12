@@ -42,7 +42,6 @@ public class AuthApiController {
 
         LoginResponseDto data = new LoginResponseDto(loginUser, session.getId(), redirectURL);
 
-//        response.setHeader("Set-Cookie", "key=value; HttpOnly; SameSite=none");
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 
