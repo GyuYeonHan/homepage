@@ -14,11 +14,11 @@ public class PostResponseDto {
     private String username;
     private String modifiedDate;
 
-    public PostResponseDto(Post entity) {
-        this.id = entity.getId().toString();
-        this.title = entity.getTitle();
-        this.content = entity.getContent();
-        this.username = entity.getUser().getUsername();
-        this.modifiedDate = entity.getModifiedDate().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분 ss초"));
+    public PostResponseDto(Post post) {
+        this.id = post.getId().toString();
+        this.title = post.getTitle();
+        this.content = post.getContent();
+        this.username = post.getUser().getUsername();
+        this.modifiedDate = post.getModifiedDate().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분 ss초"));
     }
 }

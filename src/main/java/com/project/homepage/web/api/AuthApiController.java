@@ -55,12 +55,16 @@ public class AuthApiController {
     }
 
     @GetMapping("/session")
-    public SessionDto getSession(HttpServletRequest req) {
-        HttpSession session = req.getSession(false);
+    public SessionDto getSession(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
         if (session == null) {
             return new SessionDto(false, null);
         }
         User user = (User) session.getAttribute(SessionConst.LOGIN_USER);
+        if (user == null) {
+            session.invalidate();
+            return new SessionDto(false, null);
+        }
 
         return new SessionDto(true, user.getUsername());
     }

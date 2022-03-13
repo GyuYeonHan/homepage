@@ -87,7 +87,7 @@ public class PostApiController {
         return user == null;
     }
 
-    private boolean UserNotAuthorization(Long postId, User user) {
+    private boolean UserNotAuthorization(@PathVariable Long postId, @Login User user) {
         Post post = postService.findById(postId);
         if (user.getRole().equals(Role.ADMIN)) {
             return false;
