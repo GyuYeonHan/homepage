@@ -10,12 +10,14 @@ public class UserResponseDto {
 
     private Long id;
     private String username;
+    private String loginId;
     private String role;
     private String createdDate;
 
     public UserResponseDto(User user) {
         this.id = user.getId();
         this.username = user.getUsername();
+        this.loginId = user.getLoginId();
         this.role = user.getRole().getRole();
         this.createdDate = user.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분 ss초"));;
     }

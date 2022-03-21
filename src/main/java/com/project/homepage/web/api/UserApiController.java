@@ -25,11 +25,9 @@ public class UserApiController {
 
     @GetMapping
     public List<UserResponseDto> getAllUserList() {
-        List<UserResponseDto> userDtoList = userService.findAllUser().stream()
+        return userService.findAllUser().stream()
                 .map(UserResponseDto::new)
                 .collect(Collectors.toList());
-
-        return userDtoList;
     }
 
     @GetMapping("/{userId}")
@@ -39,11 +37,19 @@ public class UserApiController {
 
     @PostMapping
     public ResponseEntity<String> saveUser(@RequestBody UserSaveRequestDto dto, @Login User user) {
-        if (user.getRole().equals(Role.ADMIN)) {
+        if (UserNotAuthentication(user) || UserNotAuthorization(user)) {
             return new ResponseEntity<>("[USER ADD] You are not Authorized", HttpStatus.UNAUTHORIZED);
         }
 
         userService.save(dto.toEntity());
         return new ResponseEntity<>("Add User Success", HttpStatus.OK);
+    }
+
+    private boolean UserNotAuthentication(User user) {
+        return user == null;
+    }
+
+    private boolean UserNotAuthorization(@Login User user) {
+        return !user.getRole().equals(Role.ADMIN);
     }
 }

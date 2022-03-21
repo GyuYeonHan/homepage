@@ -24,9 +24,9 @@ public class CommentApiController {
     private final CommentService commentService;
 
     @PostMapping("/post/{postId}")
-    public ResponseEntity<Comment> saveComment(@PathVariable Long postId, @RequestBody CommentSaveRequestDto dto, @Login User user) {
+    public ResponseEntity<String> saveComment(@PathVariable Long postId, @RequestBody CommentSaveRequestDto dto, @Login User user) {
         if (UserNotAuthentication(user)) {
-            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>("[Comment SAVE] You are not authorized", HttpStatus.UNAUTHORIZED);
         }
         Post post = postService.findById(postId);
 
@@ -35,13 +35,13 @@ public class CommentApiController {
         comment.setUser(user);
         commentService.save(comment);
 
-        return new ResponseEntity<>(comment, HttpStatus.OK);
+        return new ResponseEntity<>("Save Comment Success", HttpStatus.OK);
     }
 
     @DeleteMapping("/{commentId}")
     public ResponseEntity<String> deleteComment(@PathVariable Long commentId, @Login User user) {
         if (UserNotAuthentication(user) || UserNotAuthorization(commentId, user))
-            return new ResponseEntity<>("You are not authorized", HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>("[Comment DELETE] You are not authorized", HttpStatus.UNAUTHORIZED);
         commentService.delete(commentService.findById(commentId));
 
         return new ResponseEntity<>("Delete Comment Success", HttpStatus.OK);

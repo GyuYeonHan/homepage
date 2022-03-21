@@ -32,16 +32,17 @@ public class UserSaveRequestDto {
     }
 
     private Role createRole(String role) {
-        if (role.equals("ROLE_USER")) {
-            return Role.USER;
-        } else if (role.equals("ROLE.STUDENT")) {
-            return Role.STUDENT;
-        } else if (role.equals("ROLE.TEACHER")) {
-            return Role.TEACHER;
-        } else if (role.equals("ROLE.ADMIN")) {
-            return Role.ADMIN;
-        } else {
-            return null;
+        switch (role) {
+            case "ROLE_USER":
+                return Role.USER;
+            case "ROLE_STUDENT":
+                return Role.STUDENT;
+            case "ROLE_TEACHER":
+                return Role.TEACHER;
+            case "ROLE_ADMIN":
+                return Role.ADMIN;
+            default:
+                return null;
         }
     }
 }
