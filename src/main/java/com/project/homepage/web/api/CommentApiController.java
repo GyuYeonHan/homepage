@@ -35,7 +35,7 @@ public class CommentApiController {
         comment.setUser(user);
         commentService.save(comment);
 
-        return new ResponseEntity<>("Save Comment Success", HttpStatus.OK);
+        return new ResponseEntity<>("Save Comment Success", HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{commentId}")

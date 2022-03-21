@@ -42,7 +42,7 @@ public class UserApiController {
         }
 
         userService.save(dto.toEntity());
-        return new ResponseEntity<>("Add User Success", HttpStatus.OK);
+        return new ResponseEntity<>("Add User Success", HttpStatus.CREATED);
     }
 
     private boolean UserNotAuthentication(User user) {

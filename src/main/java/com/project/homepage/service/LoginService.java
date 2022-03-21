@@ -21,4 +21,8 @@ public class LoginService {
                 .filter(u -> u.getPassword().equals(password))
                 .orElse(null);
     }
+
+    public boolean userExist(String loginId) {
+        return userRepository.findByLoginId(loginId).isPresent();
+    }
 }

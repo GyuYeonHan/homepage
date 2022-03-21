@@ -5,6 +5,7 @@ import com.project.homepage.service.LoginService;
 import com.project.homepage.web.dto.user.SessionDto;
 import com.project.homepage.web.login.LoginForm;
 import com.project.homepage.web.login.LoginResponseDto;
+import com.project.homepage.web.login.LoginStatus;
 import com.project.homepage.web.login.SessionConst;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @Slf4j
@@ -26,12 +26,15 @@ public class AuthApiController {
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDto> login(@RequestBody LoginForm form,
-                                                  @RequestParam(defaultValue = "/") String redirectURL,
-                                                  HttpServletRequest request, HttpServletResponse response) {
+                                                  HttpServletRequest request) {
         User loginUser = loginService.login(form.getLoginId(), form.getPassword());
 
         if (loginUser == null) {
-            return new ResponseEntity<>(null, HttpStatus.OK);
+            if (loginService.userExist(form.getLoginId())) {
+                return new ResponseEntity<>(new LoginResponseDto(LoginStatus.WRONG_ID, null), HttpStatus.BAD_REQUEST);
+            } else {
+                return new ResponseEntity<>(new LoginResponseDto(LoginStatus.WRONG_PASSWORD, null), HttpStatus.BAD_REQUEST);
+            }
         }
 
         //로그인 성공 처리
@@ -40,7 +43,7 @@ public class AuthApiController {
         //세션에 로그인 회원 정보 보관
         session.setAttribute(SessionConst.LOGIN_USER, loginUser);
 
-        LoginResponseDto data = new LoginResponseDto(loginUser, session.getId(), redirectURL);
+        LoginResponseDto data = new LoginResponseDto(LoginStatus.LOGIN_SUCCESS, loginUser.getUsername());
 
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
@@ -55,17 +58,17 @@ public class AuthApiController {
     }
 
     @GetMapping("/session")
-    public SessionDto getSession(HttpServletRequest request) {
+    public ResponseEntity<SessionDto> getSession(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session == null) {
-            return new SessionDto(false, null);
+            return new ResponseEntity<>(new SessionDto(false, null), HttpStatus.OK);
+
         }
         User user = (User) session.getAttribute(SessionConst.LOGIN_USER);
         if (user == null) {
             session.invalidate();
-            return new SessionDto(false, null);
+            return new ResponseEntity<>(new SessionDto(false, null), HttpStatus.OK);
         }
-
-        return new SessionDto(true, user.getUsername());
+        return new ResponseEntity<>(new SessionDto(true, user.getUsername()), HttpStatus.OK);
     }
 }

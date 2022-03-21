@@ -49,7 +49,7 @@ public class PostApiController {
         post.setUser(user);
         postService.save(post);
 
-        return new ResponseEntity<>(post, HttpStatus.OK);
+        return new ResponseEntity<>(post, HttpStatus.CREATED);
     }
 
     @GetMapping("/{postId}")
