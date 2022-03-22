@@ -31,9 +31,9 @@ public class AuthApiController {
 
         if (loginUser == null) {
             if (loginService.userExist(form.getLoginId())) {
-                return new ResponseEntity<>(new LoginResponseDto(LoginStatus.WRONG_ID, null), HttpStatus.BAD_REQUEST);
-            } else {
                 return new ResponseEntity<>(new LoginResponseDto(LoginStatus.WRONG_PASSWORD, null), HttpStatus.BAD_REQUEST);
+            } else {
+                return new ResponseEntity<>(new LoginResponseDto(LoginStatus.WRONG_ID, null), HttpStatus.BAD_REQUEST);
             }
         }
 
@@ -43,18 +43,16 @@ public class AuthApiController {
         //세션에 로그인 회원 정보 보관
         session.setAttribute(SessionConst.LOGIN_USER, loginUser);
 
-        LoginResponseDto data = new LoginResponseDto(LoginStatus.LOGIN_SUCCESS, loginUser.getUsername());
-
-        return new ResponseEntity<>(data, HttpStatus.OK);
+        return new ResponseEntity<>(new LoginResponseDto(LoginStatus.LOGIN_SUCCESS, loginUser.getUsername()), HttpStatus.OK);
     }
 
     @PostMapping("/logout")
-    public String logout(HttpServletRequest request) {
+    public ResponseEntity<String> logout(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session != null) {
             session.invalidate();
         }
-        return "Logout Success";
+        return new ResponseEntity<>("Logout Success", HttpStatus.OK);
     }
 
     @GetMapping("/session")
