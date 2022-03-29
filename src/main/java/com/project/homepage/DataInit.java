@@ -30,33 +30,35 @@ public class DataInit {
      */
     @PostConstruct
     public void init() {
-        userInit();
-        postInit();
-        commentInit();
+        for (int i = 0; i < 30; i++) {
+            userInit(Integer.toString(i));
+            postInit(Integer.toString(i));
+            commentInit(Integer.toString(i));
+        }
     }
 
-    private void userInit() {
-        User admin = User.builder()
-                .username("관리자A")
+    private void userInit(String number) {
+        user = User.builder()
+                .username("관리자" + number)
                 .role(Role.ADMIN)
-                .loginId("admin")
+                .loginId("admin" + number)
                 .password("admin")
                 .build();
 
-        user = User.builder()
-                .username("김학생")
-                .role(Role.STUDENT)
-                .loginId("test")
-                .password("test")
-                .build();
+//        user = User.builder()
+//                .username("김학생")
+//                .role(Role.STUDENT)
+//                .loginId("test")
+//                .password("test")
+//                .build();
 
-        userRepository.save(admin);
+//        userRepository.save(admin);
         userRepository.save(user);
     }
 
-    private void postInit() {
-        String title = "테스트 게시글";
-        String content = "테스트 본문";
+    private void postInit(String number) {
+        String title = "테스트 게시글" + number;
+        String content = "테스트 본문" + number;
 
         post = Post.builder()
                 .title(title)
@@ -66,13 +68,13 @@ public class DataInit {
 
         postRepository.save(post);
     }
-    private void commentInit() {
-        Comment comments1 = Comment.builder()
+    private void commentInit(String number) {
+        Comment comments = Comment.builder()
                 .post(post)
                 .user(user)
-                .content("테스트 댓글1")
+                .content("테스트 댓글" + number)
                 .build();
 
-        commentRepository.save(comments1);
+        commentRepository.save(comments);
     }
 }

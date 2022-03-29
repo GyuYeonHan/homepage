@@ -28,6 +28,17 @@ public class PostApiController {
 
     private final PostService postService;
 
+//    @GetMapping
+//    public ResponseEntity<List<PostResponseDto>> getAllPostList() {
+//        List<PostResponseDto> postDtoList = postService.findAllPost().stream()
+//                .map(PostResponseDto::new)
+//                .collect(Collectors.toList());
+//
+//        HttpHeaders headers = new HttpHeaders();
+//
+//        return new ResponseEntity<>(postDtoList, headers, HttpStatus.OK);
+//    }
+
     @GetMapping
     public ResponseEntity<List<PostResponseDto>> getAllPostList() {
         List<PostResponseDto> postDtoList = postService.findAllPost().stream()

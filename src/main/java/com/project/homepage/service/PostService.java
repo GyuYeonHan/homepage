@@ -5,6 +5,8 @@ import com.project.homepage.domain.post.Post;
 import com.project.homepage.repository.CommentRepository;
 import com.project.homepage.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,9 +42,16 @@ public class PostService {
         postRepository.delete(posts);
     }
 
+//    @Transactional(readOnly = true)
+//    public List<Post> findAllPost() {
+//        return postRepository.findAllDesc();
+//    }
+
     @Transactional(readOnly = true)
-    public List<Post> findAllPost() {
-        return postRepository.findAllDesc();
+    public Page<Post> findAllPost() {
+
+        PageRequest pageRequest = PageRequest.of(0, 10);
+        return postRepository.findAll(pageRequest);
     }
 
     @Transactional(readOnly = true)

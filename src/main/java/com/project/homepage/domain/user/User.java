@@ -38,6 +38,9 @@ public class User extends BaseTimeEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Comment> commentList = new ArrayList<>();
 
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+//    private List<Comment> examList = new ArrayList<>();
+
     @Builder
     public User(Role role, String username, String loginId, String password) {
         this.role = role;

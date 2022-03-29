@@ -24,15 +24,15 @@ public class UserApiController {
     private final UserService userService;
 
     @GetMapping
-    public List<UserResponseDto> getAllUserList() {
-        return userService.findAllUser().stream()
+    public ResponseEntity<List<UserResponseDto>> getAllUserList() {
+        return new ResponseEntity<>(userService.findAllUser().stream()
                 .map(UserResponseDto::new)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()), HttpStatus.OK);
     }
 
     @GetMapping("/{userId}")
-    public UserResponseDto getUser(@PathVariable Long userId) {
-        return new UserResponseDto(userService.findById(userId));
+    public ResponseEntity<UserResponseDto> getUser(@PathVariable Long userId) {
+        return new ResponseEntity<>(new UserResponseDto(userService.findById(userId)), HttpStatus.OK);
     }
 
     @PostMapping
