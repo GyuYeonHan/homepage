@@ -42,4 +42,9 @@ public class Notice extends BaseTimeEntity {
         this.message = message;
         this.url = url;
     }
+
+    public void read() {
+        assert this.status != NoticeStatus.UNREAD;
+        this.status = NoticeStatus.READ;
+    }
 }

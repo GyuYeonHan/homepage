@@ -1,0 +1,24 @@
+spring:
+  profiles:
+    active: prod
+
+server:
+  ssl:
+    key-store: classpath:keystore.p12
+    key-store-type: PKCS12
+    key-store-password: gksrbdus
+    key-alias: tomcat
+  port: 8443
+  http2:
+    enabled: true
+  servlet:
+    session:
+      cookie:
+        name: JSESSIONID
+        http-only: true
+        path: /
+        same-site: none
+        domain: projects.yongcademy.kro.kr
+        max-age: 1800
+
+

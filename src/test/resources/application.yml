@@ -21,7 +21,7 @@ spring:
   session:
     store-type: jdbc
 
-logging.level:
-  org.hibernate.SQL: debug
+#logging.level:
+#  org.hibernate.SQL: debug
 
 origin: "http://localhost:3000"
