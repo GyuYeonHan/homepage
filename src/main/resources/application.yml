@@ -18,7 +18,7 @@ spring:
         dialect.storage_engine: innodb
 
     hibernate:
-      ddl-auto: create
+      ddl-auto: create-drop
 
   session:
     store-type: jdbc

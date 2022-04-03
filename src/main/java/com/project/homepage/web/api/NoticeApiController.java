@@ -25,7 +25,14 @@ public class NoticeApiController {
 
     @GetMapping("/{userId}/all")
     public ResponseEntity<List<NoticeResponseDto>> getAllNoticeList(@PathVariable Long userId) {
+        if(userId == -1) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+
         User user = userService.findById(userId);
+        if(user == null) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
 
         List<NoticeResponseDto> NoticeDtoList = noticeService.findAllNoticeByUser(user).stream()
                 .map(NoticeResponseDto::new)
@@ -36,7 +43,14 @@ public class NoticeApiController {
 
     @GetMapping("/{userId}/unread")
     public ResponseEntity<List<NoticeResponseDto>> getUnreadNoticeList(@PathVariable Long userId) {
+        if(userId == -1) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+
         User user = userService.findById(userId);
+        if(user == null) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
 
         List<NoticeResponseDto> NoticeDtoList = noticeService.findUnreadNoticeByUser(user).stream()
                 .map(NoticeResponseDto::new)

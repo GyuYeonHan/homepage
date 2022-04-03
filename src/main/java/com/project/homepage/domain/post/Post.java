@@ -34,7 +34,7 @@ public class Post extends BaseTimeEntity {
     @Column(nullable = false)
     private String content;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
     private final List<Comment> commentList = new ArrayList<>();
 
     @Builder

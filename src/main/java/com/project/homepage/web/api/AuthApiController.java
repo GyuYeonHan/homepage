@@ -59,14 +59,14 @@ public class AuthApiController {
     public ResponseEntity<SessionDto> getSession(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session == null) {
-            return new ResponseEntity<>(new SessionDto(false, null), HttpStatus.OK);
+            return new ResponseEntity<>(new SessionDto(false, null ,null), HttpStatus.OK);
 
         }
         User user = (User) session.getAttribute(SessionConst.LOGIN_USER);
         if (user == null) {
             session.invalidate();
-            return new ResponseEntity<>(new SessionDto(false, null), HttpStatus.OK);
+            return new ResponseEntity<>(new SessionDto(false, null ,null), HttpStatus.OK);
         }
-        return new ResponseEntity<>(new SessionDto(true, user.getUsername()), HttpStatus.OK);
+        return new ResponseEntity<>(new SessionDto(true, user.getId() ,user.getUsername()), HttpStatus.OK);
     }
 }

@@ -1,9 +1,8 @@
 package com.project.homepage.web.dto.post;
 
 import com.project.homepage.domain.post.Post;
+import com.project.homepage.util.TimeUtil;
 import lombok.Data;
-
-import java.time.format.DateTimeFormatter;
 
 @Data
 public class PostResponseDto {
@@ -19,6 +18,6 @@ public class PostResponseDto {
         this.title = post.getTitle();
         this.content = post.getContent();
         this.username = post.getUser().getUsername();
-        this.modifiedDate = post.getModifiedDate().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분 ss초"));
+        this.modifiedDate = TimeUtil.calculateTimeBeforeNow(post.getModifiedDate());
     }
 }

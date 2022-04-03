@@ -14,4 +14,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("select u from User u order by u.id desc")
     List<User> findAllDesc();
+
+    @Query("select u from User u where u.role = com.project.homepage.domain.user.Role.ADMIN")
+    List<User> findAllAdmin();
 }

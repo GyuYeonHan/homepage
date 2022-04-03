@@ -20,13 +20,13 @@ class UserSaveRequestDtoTest {
     }
 
     @Test
-    @DisplayName("선생님 역할이 생성된다.")
-    void createRoleTEACHER() {
+    @DisplayName("학부모 역할이 생성된다.")
+    void createRolePARENT() {
         UserSaveRequestDto dto = new UserSaveRequestDto();
-        dto.setRole("ROLE_TEACHER");
+        dto.setRole("ROLE_PARENT");
         User user = dto.toEntity();
 
-        assertEquals(Role.TEACHER, user.getRole());
+        assertEquals(Role.PARENT, user.getRole());
     }
 
     @Test

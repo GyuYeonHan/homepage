@@ -37,8 +37,8 @@ public class UserSaveRequestDto {
                 return Role.USER;
             case "ROLE_STUDENT":
                 return Role.STUDENT;
-            case "ROLE_TEACHER":
-                return Role.TEACHER;
+            case "ROLE_PARENT":
+                return Role.PARENT;
             case "ROLE_ADMIN":
                 return Role.ADMIN;
             default:

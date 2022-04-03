@@ -4,9 +4,9 @@ import com.project.homepage.domain.Comment;
 import com.project.homepage.domain.post.Post;
 import com.project.homepage.domain.user.Role;
 import com.project.homepage.domain.user.User;
-import com.project.homepage.repository.CommentRepository;
-import com.project.homepage.repository.PostRepository;
-import com.project.homepage.repository.UserRepository;
+import com.project.homepage.service.CommentService;
+import com.project.homepage.service.PostService;
+import com.project.homepage.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
@@ -18,9 +18,9 @@ import javax.annotation.PostConstruct;
 @RequiredArgsConstructor
 public class DataInit {
 
-    private final PostRepository postRepository;
-    private final CommentRepository commentRepository;
-    private final UserRepository userRepository;
+    private final PostService postService;
+    private final CommentService commentService;
+    private final UserService userService;
 
     private Post post;
     private User user;
@@ -30,7 +30,7 @@ public class DataInit {
      */
     @PostConstruct
     public void init() {
-        for (int i = 0; i < 30; i++) {
+        for (int i = 0; i < 10; i++) {
             userInit(Integer.toString(i));
             postInit(Integer.toString(i));
             commentInit(Integer.toString(i));
@@ -45,15 +45,7 @@ public class DataInit {
                 .password("admin")
                 .build();
 
-//        user = User.builder()
-//                .username("김학생")
-//                .role(Role.STUDENT)
-//                .loginId("test")
-//                .password("test")
-//                .build();
-
-//        userRepository.save(admin);
-        userRepository.save(user);
+        userService.save(user);
     }
 
     private void postInit(String number) {
@@ -66,7 +58,7 @@ public class DataInit {
                 .user(user)
                 .build();
 
-        postRepository.save(post);
+        postService.save(post);
     }
     private void commentInit(String number) {
         Comment comments = Comment.builder()
@@ -75,6 +67,6 @@ public class DataInit {
                 .content("테스트 댓글" + number)
                 .build();
 
-        commentRepository.save(comments);
+        commentService.save(comments);
     }
 }

@@ -1,10 +1,10 @@
 package com.project.homepage.web.dto.comment;
 
 import com.project.homepage.domain.Comment;
+import com.project.homepage.util.TimeUtil;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
-import java.time.format.DateTimeFormatter;
 
 @Data
 public class CommentResponseDto {
@@ -22,6 +22,6 @@ public class CommentResponseDto {
         this.id = comment.getId();
         this.content = comment.getContent();
         this.username = comment.getUser().getUsername();
-        this.modifiedDate = comment.getModifiedDate().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분 ss초"));;
+        this.modifiedDate = TimeUtil.calculateTimeBeforeNow(comment.getModifiedDate());
     }
 }
