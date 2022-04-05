@@ -31,9 +31,9 @@ public class AuthApiController {
 
         if (loginUser == null) {
             if (loginService.userExist(form.getLoginId())) {
-                return new ResponseEntity<>(new LoginResponseDto(LoginStatus.WRONG_PASSWORD, null), HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(new LoginResponseDto(LoginStatus.WRONG_PASSWORD, null, null), HttpStatus.BAD_REQUEST);
             } else {
-                return new ResponseEntity<>(new LoginResponseDto(LoginStatus.WRONG_ID, null), HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(new LoginResponseDto(LoginStatus.WRONG_ID, null, null), HttpStatus.BAD_REQUEST);
             }
         }
 
@@ -43,7 +43,7 @@ public class AuthApiController {
         //세션에 로그인 회원 정보 보관
         session.setAttribute(SessionConst.LOGIN_USER, loginUser);
 
-        return new ResponseEntity<>(new LoginResponseDto(LoginStatus.LOGIN_SUCCESS, loginUser.getUsername()), HttpStatus.OK);
+        return new ResponseEntity<>(new LoginResponseDto(LoginStatus.LOGIN_SUCCESS, loginUser.getId(), loginUser.getUsername()), HttpStatus.OK);
     }
 
     @PostMapping("/logout")
@@ -59,14 +59,14 @@ public class AuthApiController {
     public ResponseEntity<SessionDto> getSession(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session == null) {
-            return new ResponseEntity<>(new SessionDto(false, null ,null), HttpStatus.OK);
+            return new ResponseEntity<>(new SessionDto(false, null, null), HttpStatus.OK);
 
         }
         User user = (User) session.getAttribute(SessionConst.LOGIN_USER);
         if (user == null) {
             session.invalidate();
-            return new ResponseEntity<>(new SessionDto(false, null ,null), HttpStatus.OK);
+            return new ResponseEntity<>(new SessionDto(false, null, null), HttpStatus.OK);
         }
-        return new ResponseEntity<>(new SessionDto(true, user.getId() ,user.getUsername()), HttpStatus.OK);
+        return new ResponseEntity<>(new SessionDto(true, user.getId(), user.getUsername()), HttpStatus.OK);
     }
 }

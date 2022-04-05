@@ -1,8 +1,6 @@
 package com.project.homepage.service;
 
 import com.project.homepage.domain.Comment;
-import com.project.homepage.domain.notice.Notice;
-import com.project.homepage.domain.notice.NoticeStatus;
 import com.project.homepage.domain.post.Post;
 import com.project.homepage.domain.user.User;
 import com.project.homepage.repository.CommentRepository;
@@ -22,6 +20,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
     private final NoticeRepository noticeRepository;
+    private final NoticeService noticeService;
     private final UserRepository userRepository;
 
     @Transactional
@@ -30,14 +29,9 @@ public class PostService {
 
         List<User> allAdmin = userRepository.findAllAdmin();
         for (User admin: allAdmin ) {
-            Notice notice = Notice.builder()
-                    .message("새 글[" + savedPost.getTitle() + "]이 생성되었습니다.")
-                    .url("/post/" + savedPost.getId())
-                    .status(NoticeStatus.UNREAD)
-                    .user(admin)
-                    .build();
-
-            noticeRepository.save(notice);
+            String noticeMessage = "새 글[" + savedPost.getTitle() + "]이 생성되었습니다.";
+            String noticeUrl = "/board/" + savedPost.getId();
+            noticeService.create(noticeMessage, noticeUrl, admin);
         }
 
         return savedPost;

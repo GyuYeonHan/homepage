@@ -1,6 +1,7 @@
 package com.project.homepage.service;
 
 import com.project.homepage.domain.notice.Notice;
+import com.project.homepage.domain.notice.NoticeStatus;
 import com.project.homepage.domain.user.User;
 import com.project.homepage.repository.NoticeRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,8 +17,15 @@ public class NoticeService {
     private final NoticeRepository noticeRepository;
 
     @Transactional
-    public Notice create(Notice notice) {
-        return noticeRepository.save(notice);
+    public void create(String message, String url, User user) {
+        Notice notice = Notice.builder()
+                .message(message)
+                .url(url)
+                .status(NoticeStatus.UNREAD)
+                .user(user)
+                .build();
+
+        noticeRepository.save(notice);
     }
 
     @Transactional(readOnly = true)
@@ -33,5 +41,10 @@ public class NoticeService {
     @Transactional(readOnly = true)
     public List<Notice> findUnreadNoticeByUser(User user) {
         return noticeRepository.findUnreadByUser(user).orElseThrow(() -> new IllegalArgumentException("알람이 없습니다."));
+    }
+
+    @Transactional
+    public void readNotice(Notice notice) {
+        notice.read();
     }
 }

@@ -65,12 +65,16 @@ public class PostApiController {
 
     @GetMapping("/{postId}")
     public ResponseEntity<PostCommentDto> getPost(@PathVariable Long postId) {
-        Post post = postService.findById(postId);
+        Post post;
+        try {
+            post = postService.findById(postId);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
         PostResponseDto postDto = new PostResponseDto(post);
         List<CommentResponseDto> commentDtoList = post.getCommentList().stream()
                 .map(CommentResponseDto::new)
                 .collect(Collectors.toList());
-        log.info("post={}, comment={}, commentDto={}", postDto, post.getCommentList(), commentDtoList);
 
         PostCommentDto data = new PostCommentDto(postDto, commentDtoList);
 
@@ -94,7 +98,7 @@ public class PostApiController {
         Post post = postService.findById(postId);
         postService.delete(post);
 
-        return new ResponseEntity<>("Delete Post Success", HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     private boolean UserNotAuthentication(User user) {
