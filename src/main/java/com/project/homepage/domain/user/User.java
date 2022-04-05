@@ -32,14 +32,11 @@ public class User extends BaseTimeEntity {
     @Column(nullable = false)
     private String password;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user")
     private List<Post> postList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user")
     private List<Comment> commentList = new ArrayList<>();
-
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-//    private List<Comment> examList = new ArrayList<>();
 
     @Builder
     public User(Role role, String username, String loginId, String password) {

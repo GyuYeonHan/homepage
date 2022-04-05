@@ -1,6 +1,5 @@
 package com.project.homepage.service;
 
-import com.project.homepage.domain.Comment;
 import com.project.homepage.domain.post.Post;
 import com.project.homepage.domain.user.User;
 import com.project.homepage.repository.CommentRepository;
@@ -28,7 +27,7 @@ public class PostService {
         Post savedPost = postRepository.save(post);
 
         List<User> allAdmin = userRepository.findAllAdmin();
-        for (User admin: allAdmin ) {
+        for (User admin : allAdmin) {
             String noticeMessage = "새 글[" + savedPost.getTitle() + "]이 생성되었습니다.";
             String noticeUrl = "/board/" + savedPost.getId();
             noticeService.create(noticeMessage, noticeUrl, admin);
@@ -39,17 +38,12 @@ public class PostService {
 
     @Transactional
     public void edit(Long id, String title, String content) {
-        Post post = postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id="+ id));
+        Post post = postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
         post.update(title, content);
     }
 
     @Transactional
     public void delete(Post post) {
-        List<Comment> commentList = post.getCommentList();
-
-        for (Comment comment : commentList) {
-            commentRepository.delete(comment);
-        }
         postRepository.delete(post);
     }
 

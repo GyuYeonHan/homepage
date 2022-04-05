@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
@@ -27,6 +26,9 @@ class NoticeRepositoryTest {
 
     @BeforeEach
     void setUp() {
+        noticeRepository.deleteAll();
+        userRepository.deleteAll();
+
         user = User.builder()
                 .username("userA")
                 .role(Role.ADMIN)
@@ -64,7 +66,7 @@ class NoticeRepositoryTest {
     void findByNull() {
         Optional<List<Notice>> allNotice = noticeRepository.findAllByUser(null);
 
-        assertFalse(allNotice.isPresent());
+        assertTrue(allNotice.isPresent());
         assertThat(allNotice.get().size()).isEqualTo(0);
     }
 

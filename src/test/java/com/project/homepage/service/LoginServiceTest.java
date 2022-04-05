@@ -2,6 +2,7 @@ package com.project.homepage.service;
 
 import com.project.homepage.domain.user.Role;
 import com.project.homepage.domain.user.User;
+import com.project.homepage.repository.NoticeRepository;
 import com.project.homepage.repository.UserRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,6 +16,9 @@ class LoginServiceTest {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private NoticeRepository noticeRepository;
 
     @Autowired
     private LoginService loginService;
@@ -37,6 +41,7 @@ class LoginServiceTest {
 
     @BeforeEach
     void setUp() {
+        noticeRepository.deleteAll();
         userRepository.deleteAll();
     }
 
