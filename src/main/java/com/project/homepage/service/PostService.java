@@ -1,9 +1,10 @@
 package com.project.homepage.service;
 
+import com.project.homepage.domain.Comment;
 import com.project.homepage.domain.post.Post;
+import com.project.homepage.domain.post.PostType;
 import com.project.homepage.domain.user.User;
 import com.project.homepage.repository.CommentRepository;
-import com.project.homepage.repository.NoticeRepository;
 import com.project.homepage.repository.PostRepository;
 import com.project.homepage.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,22 +19,35 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
-    private final NoticeRepository noticeRepository;
     private final NoticeService noticeService;
     private final UserRepository userRepository;
 
     @Transactional
-    public Post save(Post post) {
+    public void saveAnnouncement(Post post) {
+        post.setType(PostType.ANNOUNCEMENT);
         Post savedPost = postRepository.save(post);
 
         List<User> allAdmin = userRepository.findAllAdmin();
         for (User admin : allAdmin) {
-            String noticeMessage = "새 글[" + savedPost.getTitle() + "]이 생성되었습니다.";
-            String noticeUrl = "/board/" + savedPost.getId();
+            String noticeMessage = "새 공지사항[" + savedPost.getTitle() + "]이 작성되었습니다.";
+            String noticeUrl = "/announcement/" + savedPost.getId();
             noticeService.create(noticeMessage, noticeUrl, admin);
         }
 
-        return savedPost;
+    }
+
+    @Transactional
+    public void saveQuestion(Post post) {
+        post.setType(PostType.QUESTION);
+        Post savedPost = postRepository.save(post);
+
+        List<User> allAdmin = userRepository.findAllAdmin();
+        for (User admin : allAdmin) {
+            String noticeMessage = "새 질문[" + savedPost.getTitle() + "]이 작성되었습니다.";
+            String noticeUrl = "/question/" + savedPost.getId();
+            noticeService.create(noticeMessage, noticeUrl, admin);
+        }
+
     }
 
     @Transactional
@@ -44,12 +58,27 @@ public class PostService {
 
     @Transactional
     public void delete(Post post) {
+        List<Comment> commentList = post.getCommentList();
+
+        for (Comment comment : commentList) {
+            commentRepository.delete(comment);
+        }
         postRepository.delete(post);
     }
 
     @Transactional(readOnly = true)
     public List<Post> findAllPost() {
-        return postRepository.findAllDesc();
+        return postRepository.findAllPostDesc();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Post> findAllAnnouncementPost() {
+        return postRepository.findAllAnnouncementPostDesc();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Post> findAllQuestionPost() {
+        return postRepository.findAllQuestionPostDesc();
     }
 
 //    @Transactional(readOnly = true)

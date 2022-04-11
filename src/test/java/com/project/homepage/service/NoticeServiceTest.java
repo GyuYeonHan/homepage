@@ -6,7 +6,6 @@ import com.project.homepage.domain.post.Post;
 import com.project.homepage.domain.user.Role;
 import com.project.homepage.domain.user.User;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +45,7 @@ class NoticeServiceTest {
                 .build();
 
         //when
-        postService.save(post); // 알림 생성
+        postService.saveAnnouncement(post); // 알림 생성
         List<Notice> noticeList = noticeService.findAllNoticeByUser(userA);
 
         //then

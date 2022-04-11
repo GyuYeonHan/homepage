@@ -58,7 +58,11 @@ public class DataInit {
                 .user(user)
                 .build();
 
-        postService.save(post);
+        if (Integer.parseInt(number) % 2 == 0) {
+            postService.saveAnnouncement(post);
+        } else {
+            postService.saveQuestion(post);
+        }
     }
     private void commentInit(String number) {
         Comment comments = Comment.builder()

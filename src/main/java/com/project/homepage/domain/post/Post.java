@@ -1,6 +1,5 @@
 package com.project.homepage.domain.post;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.homepage.domain.BaseTimeEntity;
 import com.project.homepage.domain.Comment;
 import com.project.homepage.domain.user.User;
@@ -23,7 +22,10 @@ public class Post extends BaseTimeEntity {
     @Column(name = "post_id")
     private Long id;
 
-    @JsonIgnore
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    PostType type;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
@@ -46,6 +48,10 @@ public class Post extends BaseTimeEntity {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public void setType(PostType type) {
+        this.type = type;
     }
 
     public void update(String title, String content) {

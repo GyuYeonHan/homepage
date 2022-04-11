@@ -28,17 +28,6 @@ public class PostApiController {
 
     private final PostService postService;
 
-//    @GetMapping
-//    public ResponseEntity<List<PostResponseDto>> getAllPostList() {
-//        List<PostResponseDto> postDtoList = postService.findAllPost().stream()
-//                .map(PostResponseDto::new)
-//                .collect(Collectors.toList());
-//
-//        HttpHeaders headers = new HttpHeaders();
-//
-//        return new ResponseEntity<>(postDtoList, headers, HttpStatus.OK);
-//    }
-
     @GetMapping
     public ResponseEntity<List<PostResponseDto>> getAllPostList() {
         List<PostResponseDto> postDtoList = postService.findAllPost().stream()
@@ -50,15 +39,50 @@ public class PostApiController {
         return new ResponseEntity<>(postDtoList, headers, HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity<Post> savePost(@RequestBody PostSaveRequestDto dto, @Login User user) {
+    @GetMapping("/announcement")
+    public ResponseEntity<List<PostResponseDto>> getALLAnnouncementPostList() {
+        List<PostResponseDto> postDtoList = postService.findAllAnnouncementPost().stream()
+                .map(PostResponseDto::new)
+                .collect(Collectors.toList());
+
+        HttpHeaders headers = new HttpHeaders();
+
+        return new ResponseEntity<>(postDtoList, headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/question")
+    public ResponseEntity<List<PostResponseDto>> getAllQuestionPostList() {
+        List<PostResponseDto> postDtoList = postService.findAllQuestionPost().stream()
+                .map(PostResponseDto::new)
+                .collect(Collectors.toList());
+
+        HttpHeaders headers = new HttpHeaders();
+
+        return new ResponseEntity<>(postDtoList, headers, HttpStatus.OK);
+    }
+
+    @PostMapping("/announcement")
+    public ResponseEntity<Post> saveAnnouncement(@RequestBody PostSaveRequestDto dto, @Login User user) {
         if (UserNotAuthentication(user)) {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         }
 
         Post post = dto.toEntity();
         post.setUser(user);
-        postService.save(post);
+        postService.saveAnnouncement(post);
+
+        return new ResponseEntity<>(post, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/question")
+    public ResponseEntity<Post> saveQuestion(@RequestBody PostSaveRequestDto dto, @Login User user) {
+        if (UserNotAuthentication(user)) {
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+        }
+
+        Post post = dto.toEntity();
+        post.setUser(user);
+        postService.saveQuestion(post);
 
         return new ResponseEntity<>(post, HttpStatus.CREATED);
     }

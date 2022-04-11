@@ -55,7 +55,7 @@ public class BoardController {
 
         Post post = dto.toEntity();
         post.setUser(user);
-        postService.save(post);
+        postService.saveAnnouncement(post);
 
         return "redirect:/board";
     }

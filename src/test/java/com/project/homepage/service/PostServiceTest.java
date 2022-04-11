@@ -74,7 +74,7 @@ class PostServiceTest {
                 .content(post1_content)
                 .user(userA)
                 .build();
-        postService.save(post1);
+        postService.saveAnnouncement(post1);
     }
     private void commentInit() {
         comment1 = Comment.builder()

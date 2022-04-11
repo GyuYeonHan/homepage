@@ -2,6 +2,7 @@ package com.project.homepage.service;
 
 import com.project.homepage.domain.Comment;
 import com.project.homepage.domain.post.Post;
+import com.project.homepage.domain.post.PostType;
 import com.project.homepage.domain.user.User;
 import com.project.homepage.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,12 @@ public class CommentService {
         User postOwner = comment.getPost().getUser();
 
         String noticeMessage = "글[" + post.getTitle() + "]에 " + commentOwner.getUsername() + "님의 댓글이 달렸습니다.";
-        String noticeUrl = "/board/" + post.getId();
+        String noticeUrl;
+        if (post.getType() == PostType.ANNOUNCEMENT) {
+            noticeUrl = "/announcement/" + post.getId();
+        } else {
+            noticeUrl = "/question/" + post.getId();
+        }
         noticeService.create(noticeMessage, noticeUrl, postOwner);
 
         return commentRepository.save(comment);
