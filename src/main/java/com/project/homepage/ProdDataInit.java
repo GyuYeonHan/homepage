@@ -14,7 +14,6 @@ import javax.annotation.PostConstruct;
 @RequiredArgsConstructor
 public class ProdDataInit {
 
-
     private final UserService userService;
 
     private User user;
