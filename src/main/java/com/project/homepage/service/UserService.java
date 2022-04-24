@@ -1,5 +1,4 @@
 package com.project.homepage.service;
-import com.project.homepage.domain.post.Post;
 import com.project.homepage.domain.user.User;
 import com.project.homepage.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,10 +33,18 @@ public class UserApiController {
 
     @GetMapping("/{userId}")
     public ResponseEntity<UserResponseDto> getUser(@PathVariable Long userId) {
-        return new ResponseEntity<>(new UserResponseDto(userService.findById(userId)), HttpStatus.OK);
+        try {
+            User findUser = userService.findById(userId);
+            return new ResponseEntity<>(new UserResponseDto(findUser), HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        } catch (MethodArgumentTypeMismatchException e) {
+            log.info("error", e);
+            throw e;
+        }
     }
 
-    @PostMapping
+    @PostMapping()
     public ResponseEntity<String> saveUser(@RequestBody UserSaveRequestDto dto, @Login User user) {
         if (UserNotAuthentication(user) || UserNotAuthorization(user)) {
             return new ResponseEntity<>("[USER ADD] You are not Authorized", HttpStatus.UNAUTHORIZED);

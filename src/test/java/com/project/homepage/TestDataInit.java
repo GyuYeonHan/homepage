@@ -13,10 +13,10 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 
-@Profile("local")
+@Profile("test")
 @Component
 @RequiredArgsConstructor
-public class DataInit {
+public class TestDataInit {
 
     private final PostService postService;
     private final CommentService commentService;
@@ -30,7 +30,7 @@ public class DataInit {
      */
     @PostConstruct
     public void init() {
-        for (int i = 0; i < 10; i++) {
+        for (int i = 1; i < 4; i++) {
             userInit(Integer.toString(i));
             postInit(Integer.toString(i));
             commentInit(Integer.toString(i));
@@ -39,18 +39,18 @@ public class DataInit {
 
     private void userInit(String number) {
         user = User.builder()
-                .username("관리자" + number)
+                .username("test" + number)
                 .role(Role.ADMIN)
-                .loginId("admin" + number)
-                .password("admin")
+                .loginId("test" + number)
+                .password("test")
                 .build();
 
         userService.save(user);
     }
 
     private void postInit(String number) {
-        String title = "테스트 게시글" + number;
-        String content = "테스트 본문" + number;
+        String title = "title" + number;
+        String content = "test post content";
 
         post = Post.builder()
                 .title(title)
@@ -68,7 +68,7 @@ public class DataInit {
         Comment comments = Comment.builder()
                 .post(post)
                 .user(user)
-                .content("테스트 댓글" + number)
+                .content("test comment" + number)
                 .build();
 
         commentService.save(comments);

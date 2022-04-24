@@ -23,6 +23,10 @@ spring:
   session:
     store-type: jdbc
 
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
 logging.level:
   org.hibernate.SQL: debug
 
