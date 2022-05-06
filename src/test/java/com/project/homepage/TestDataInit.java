@@ -2,6 +2,7 @@ package com.project.homepage;
 
 import com.project.homepage.domain.Comment;
 import com.project.homepage.domain.post.Post;
+import com.project.homepage.domain.post.PostType;
 import com.project.homepage.domain.user.Role;
 import com.project.homepage.domain.user.User;
 import com.project.homepage.service.CommentService;
@@ -59,10 +60,12 @@ public class TestDataInit {
                 .build();
 
         if (Integer.parseInt(number) % 2 == 0) {
-            postService.saveAnnouncement(post);
+            post.setType(PostType.ANNOUNCEMENT);
         } else {
-            postService.saveQuestion(post);
+            post.setType(PostType.QUESTION);
         }
+
+        postService.savePost(post);
     }
     private void commentInit(String number) {
         Comment comments = Comment.builder()

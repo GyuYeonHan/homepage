@@ -68,7 +68,7 @@ public class NoticeApiController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
 
-        noticeService.readNotice(notice);
+        notice.read();
 
         return new ResponseEntity<>(Long.toString(noticeId) + " is now read", HttpStatus.OK);
     }

@@ -1,6 +1,7 @@
 package com.project.homepage.web.api;
 
 import com.project.homepage.domain.post.Post;
+import com.project.homepage.domain.post.PostType;
 import com.project.homepage.domain.user.Role;
 import com.project.homepage.domain.user.User;
 import com.project.homepage.service.PostService;
@@ -17,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -62,27 +64,29 @@ public class PostApiController {
     }
 
     @PostMapping("/announcement")
-    public ResponseEntity<Post> saveAnnouncement(@RequestBody PostSaveRequestDto dto, @Login User user) {
+    public ResponseEntity<Post> saveAnnouncement(@Valid @RequestBody PostSaveRequestDto dto, @Login User user) {
         if (UserNotAuthentication(user)) {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         }
 
         Post post = dto.toEntity();
         post.setUser(user);
-        postService.saveAnnouncement(post);
+        post.setType(PostType.ANNOUNCEMENT);
+        postService.savePost(post);
 
         return new ResponseEntity<>(post, HttpStatus.CREATED);
     }
 
     @PostMapping("/question")
-    public ResponseEntity<Post> saveQuestion(@RequestBody PostSaveRequestDto dto, @Login User user) {
+    public ResponseEntity<Post> saveQuestion(@Valid @RequestBody PostSaveRequestDto dto, @Login User user) {
         if (UserNotAuthentication(user)) {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         }
 
         Post post = dto.toEntity();
         post.setUser(user);
-        postService.saveQuestion(post);
+        post.setType(PostType.QUESTION);
+        postService.savePost(post);
 
         return new ResponseEntity<>(post, HttpStatus.CREATED);
     }

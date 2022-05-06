@@ -1,10 +1,11 @@
 package com.project.homepage.service;
 
 import com.project.homepage.domain.Comment;
+import com.project.homepage.domain.notice.Notice;
 import com.project.homepage.domain.post.Post;
-import com.project.homepage.domain.post.PostType;
 import com.project.homepage.domain.user.User;
 import com.project.homepage.repository.CommentRepository;
+import com.project.homepage.repository.NoticeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CommentService {
 
     private final CommentRepository commentRepository;
-    private final NoticeService noticeService;
+    private final NoticeRepository noticeRepository;
 
     @Transactional
     public Comment save(Comment comment) {
@@ -22,16 +23,14 @@ public class CommentService {
         User commentOwner = comment.getUser();
         User postOwner = comment.getPost().getUser();
 
-        String noticeMessage = "글[" + post.getTitle() + "]에 " + commentOwner.getUsername() + "님의 댓글이 달렸습니다.";
-        String noticeUrl;
-        if (post.getType() == PostType.ANNOUNCEMENT) {
-            noticeUrl = "/announcement/" + post.getId();
-        } else {
-            noticeUrl = "/question/" + post.getId();
-        }
-        noticeService.create(noticeMessage, noticeUrl, postOwner);
+        createNotice(post, commentOwner.getUsername(), postOwner);
 
         return commentRepository.save(comment);
+    }
+
+    @Transactional(readOnly = true)
+    public Comment findById(Long id) {
+        return commentRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 댓글이 없습니다. id=" + id));
     }
 
     @Transactional
@@ -39,8 +38,14 @@ public class CommentService {
         commentRepository.delete(comment);
     }
 
-    @Transactional(readOnly = true)
-    public Comment findById(Long id) {
-        return commentRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 댓글이 없습니다. id=" + id));
+    private Notice createNotice(Post post, String commentOwnerUserName, User postOwner) {
+        String message = "글[" + post.getTitle() + "]에 " + commentOwnerUserName + "님의 댓글이 달렸습니다.";
+        String url = post.getType().getUrl() + "/" + post.getId();
+
+        Notice notice = Notice.create(message, url, postOwner);
+
+        noticeRepository.save(notice);
+
+        return notice;
     }
 }

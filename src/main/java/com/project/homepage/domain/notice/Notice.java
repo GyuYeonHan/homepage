@@ -35,16 +35,24 @@ public class Notice extends BaseTimeEntity {
     @Column(nullable = false)
     private String url;
 
-    @Builder
-    public Notice(NoticeStatus status, User user, String message, String url) {
+    @Builder(access= AccessLevel.PRIVATE)
+    private Notice(NoticeStatus status, User user, String message, String url) {
         this.status = status;
         this.user = user;
         this.message = message;
         this.url = url;
     }
 
+    public static Notice create(String message, String url, User user) {
+        return Notice.builder()
+                .status(NoticeStatus.UNREAD)
+                .user(user)
+                .message(message)
+                .url(url)
+                .build();
+    }
+
     public void read() {
-        assert this.status != NoticeStatus.UNREAD;
         this.status = NoticeStatus.READ;
     }
 }

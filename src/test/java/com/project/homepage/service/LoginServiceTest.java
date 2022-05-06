@@ -1,99 +1,101 @@
 package com.project.homepage.service;
 
-import com.project.homepage.domain.user.Role;
 import com.project.homepage.domain.user.User;
-import com.project.homepage.repository.NoticeRepository;
 import com.project.homepage.repository.UserRepository;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@SpringBootTest
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
+import static org.mockito.Mockito.times;
+
+@ExtendWith(MockitoExtension.class)
 class LoginServiceTest {
 
-    @Autowired
-    private UserRepository userRepository;
+    @Mock
+    UserRepository userRepository;
 
-    @Autowired
-    private NoticeRepository noticeRepository;
+    @InjectMocks
+    LoginService loginService;
 
-    @Autowired
-    private LoginService loginService;
+    @Nested
+    @DisplayName("아이디와 패스워드로 로그인한다.")
+    class login {
 
-    User userA;
-    String userA_username = "유저A";
-    String userA_loginID = "userAID";
-    String userA_password = "userAPassword";
+        @Test
+        @DisplayName("로그인에 성공하면 유저를 반환한다.")
+        public void success() {
+            //given
+            String loginId = "testId";
+            String password = "testPw";
+            User user = User.builder().loginId(loginId).password(password).build();
+            given(userRepository.findByLoginId(loginId)).willReturn(Optional.of(user));
 
-    private void userInit() {
-        userA = User.builder()
-                .username(userA_username)
-                .role(Role.ADMIN)
-                .loginId(userA_loginID)
-                .password(userA_password)
-                .build();
+            //when
+            User loginUser = loginService.login(loginId, password);
 
-        userRepository.save(userA);
-    }
+            //then
+            then(userRepository).should(times(1)).findByLoginId(loginId);
+            assertThat(loginUser.getLoginId()).isEqualTo(loginId);
+            assertThat(loginUser.getPassword()).isEqualTo(password);
+        }
 
-    @BeforeEach
-    void setUp() {
-        noticeRepository.deleteAll();
-        userRepository.deleteAll();
-    }
+        @Test
+        @DisplayName("아이디가 존재하지 않으면 로그인에 실패한다.")
+        public void login_fail_with_null_login_id() {
+            //given
+            String loginId = "testId";
+            String password = "testPw";
+            given(userRepository.findByLoginId(loginId)).willReturn(Optional.empty());
 
-    @Test
-    @DisplayName("올바른 아이디와 패스워드로 로그인에 성공합니다.")
-    void loginSuccess() {
-        //given
-        userInit();
+            //when
+            User loginUser = loginService.login(loginId, password);
 
-        //when
-        User loginUser = loginService.login(userA_loginID, userA_password);
+            //then
+            then(userRepository).should(times(1)).findByLoginId(loginId);
+            assertThat(loginUser).isNull();
+        }
 
-        //then
-        Assertions.assertThat(loginUser.getLoginId()).isEqualTo(userA.getLoginId());
-    }
+        @Test
+        @DisplayName("아이디는 존재하지만 패스워드가 틀리면 로그인에 실패한다.")
+        public void login_fail_with_wrong_password() {
+            //given
+            String loginId = "testId";
+            String password = "testPw";
+            User user = User.builder().loginId(loginId).password("wrongPw").build();
+            given(userRepository.findByLoginId(loginId)).willReturn(Optional.of(user));
 
-    @Test
-    @DisplayName("올바른 아이디와 잘못된 패스워드로 로그인에 실패합니다.")
-    void loginFail1() {
-        //given
-        userInit();
+            //when
+            User loginUser = loginService.login(loginId, password);
 
-        //when
-        User loginUser = loginService.login(userA_loginID, "wrong");
-
-        //then
-        Assertions.assertThat(loginUser).isNull();
-    }
-
-    @Test
-    @DisplayName("잘못된 아이디와 올바른 패스워드로 로그인에 실패합니다.")
-    void loginFail2() {
-        //given
-        userInit();
-
-        //when
-        User loginUser = loginService.login("wrong", userA_password);
-
-        //then
-        Assertions.assertThat(loginUser).isNull();
+            //then
+            then(userRepository).should(times(1)).findByLoginId(loginId);
+            assertThat(loginUser).isNull();
+        }
     }
 
     @Test
-    @DisplayName("잘못된 아이디와 패스워드로 로그인에 실패합니다.")
-    void loginFail3() {
+    @DisplayName("해당 아이디의 유저가 존재하는지 체크한다.")
+    void userExist() {
         //given
-        userInit();
+        String loginId = "testId";
+        User user = User.builder().loginId(loginId).build();
+        given(userRepository.findByLoginId(loginId)).willReturn(Optional.of(user));
 
         //when
-        User loginUser = loginService.login("wrong", "wrong");
+        boolean exist = loginService.userExist(loginId);
 
         //then
-        Assertions.assertThat(loginUser).isNull();
+        then(userRepository).should(times(1)).findByLoginId(loginId);
+        assertThat(exist).isTrue();
     }
 }

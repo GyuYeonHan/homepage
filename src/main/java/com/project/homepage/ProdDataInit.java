@@ -16,8 +16,6 @@ public class ProdDataInit {
 
     private final UserService userService;
 
-    private User user;
-
     /**
      * 관리자 계정 추가
      */
@@ -27,7 +25,7 @@ public class ProdDataInit {
     }
 
     private void userInit() {
-        user = User.builder()
+        User user = User.builder()
                 .username("관리자")
                 .role(Role.ADMIN)
                 .loginId("admin")

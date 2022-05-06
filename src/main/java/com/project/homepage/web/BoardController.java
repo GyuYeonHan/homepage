@@ -2,6 +2,7 @@ package com.project.homepage.web;
 
 import com.project.homepage.domain.Comment;
 import com.project.homepage.domain.post.Post;
+import com.project.homepage.domain.post.PostType;
 import com.project.homepage.domain.user.User;
 import com.project.homepage.service.PostService;
 import com.project.homepage.web.dto.comment.CommentSaveRequestDto;
@@ -55,7 +56,8 @@ public class BoardController {
 
         Post post = dto.toEntity();
         post.setUser(user);
-        postService.saveAnnouncement(post);
+        post.setType(PostType.ANNOUNCEMENT);
+        postService.savePost(post);
 
         return "redirect:/board";
     }

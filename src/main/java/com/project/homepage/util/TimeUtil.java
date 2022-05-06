@@ -3,7 +3,10 @@ package com.project.homepage.util;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
-public class TimeUtil {
+public abstract class TimeUtil {
+
+    private TimeUtil() {
+    }
 
     public static String calculateTimeBeforeNow(LocalDateTime time) {
         LocalDateTime now = LocalDateTime.now();
